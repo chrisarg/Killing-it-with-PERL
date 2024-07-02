@@ -1,4 +1,7 @@
-## How can we get and set the OpenMP environment from Perl?
+---
+title: " How can we get and set the OpenMP environment from Perl? "
+date: 2024-07-01
+---
 
 Those who attended the TPRC2024 conference last week, had the opportunity to listen to Brett Estrade talking about intermediate uses of OpenMP in Perl. 
 (If you had not had the chance to go, well here is his [excellent talk](https://www.youtube.com/watch?v=_pzG5DerDT0)).
