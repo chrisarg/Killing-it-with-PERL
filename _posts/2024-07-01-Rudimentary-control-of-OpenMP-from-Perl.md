@@ -23,6 +23,7 @@ the compilation flags and the environment respectively. The code itself is very 
 
 So here is the **Perl** part:
 ```perl
+
 use v5.38;
 use Alien::OpenMP;
 use OpenMP::Environment;
@@ -48,6 +49,7 @@ __C__
 And here is the **C** part (which would ordinarly follow the \_\_C\_\_ token (but we parsed it out to highlight the C syntax).
 
 ```c
+
 #include <omp.h>
 #include <stdlib.h>
 #include <string.h>
@@ -126,6 +128,7 @@ Schedule in C: 1 as seen from thread 3
 Schedule in C: 1 as seen from thread 1
 Schedule in C: 1 as seen from thread 4
 ```
-confirming that we used 5 threads and static scheduling (the numerical code for the static scheduling is 1, but in any case we also read the value as text in C and sent it back to Perl).
+confirming that we used 5 threads and static scheduling. Note that the numerical code used internally by the OpenMP runtime for static scheduling is 1, but in any case we also read the value as text in C from the environment and sent it back to Perl, as we did, if we have to be 100% sure that we got what asked for.
+
 Since one of the main reasons to use Perl with OpenMP is to benchmark different runtime combinations for speed, I use the clause **schedule(runtime)** in all my Perl/OpenMP codes!
 Hopefully these snippets can be of use to those experimenting with OpenMP applications in Perl!
