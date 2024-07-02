@@ -47,7 +47,7 @@ __C__
 
 And here is the **C** part (which would ordinarly follow the \_\_C\_\_ token (but we parsed it out to highlight the C syntax).
 
-```C
+```c
 #include <omp.h>
 #include <stdlib.h>
 #include <string.h>
