@@ -76,7 +76,7 @@ void map_in_C_sequential(AV *array) {
 }
 ```
 
-**Parallelize the C function loop using OpenMP.** In a previous entry we discussed how to control the OpenMP environment from within Perl and compile OpenMP aware Inline::C code for 
+**Parallelize the C function loop using OpenMP.** In a [previous entry](https://chrisarg.github.io/Killing-It-with-PERL/2024/07/01/Rudimentary-control-of-OpenMP-from-Perl.html) we discussed how to control the OpenMP environment from within Perl and compile OpenMP aware Inline::C code for 
 use by Perl, so let's put this knowledge into action! On the Perl side of the program we will do this:
 ```perl
 use v5.38;
