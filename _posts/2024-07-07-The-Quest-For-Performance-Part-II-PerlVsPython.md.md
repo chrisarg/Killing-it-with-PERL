@@ -109,7 +109,7 @@ Compared to the [Perl results](https://chrisarg.github.io/Killing-It-with-PERL/2
 * Single threaded PDL and numpy gave nearly identical results, followed closely by base R
 * Failure to account for the compilation overhead of Numba yields the **false** impression that it is slower than Numpy. When accounting for the compilation overhead, Numba is x2 faster than Numpy
 * Parallelization with Joblib did improve upon base Python, but was still inferior to the single thread Perl implementation
-* Multi-threaded PDL (and OpenMP) crashed every other implementation in all languages
+* Multi-threaded PDL (and OpenMP) crushed (not crashed!) every other implementation in all languages
 
 I hope this post and the [Perl one](https://chrisarg.github.io/Killing-It-with-PERL/2024/07/06/The-Quest-For-Performance-Part-I-InlineC-OpenMP-PDL.html), provide some food for thought about
 the language to use for your next data/compute intensive operation. 
