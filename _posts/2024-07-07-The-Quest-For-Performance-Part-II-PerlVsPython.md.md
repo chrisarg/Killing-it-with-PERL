@@ -47,7 +47,7 @@ np.cos(array_in_np, out=array_in_np)
 ```
 * Joblib (note that this example is not a true in-place one, but I have not been able to make it run using the out arguments)
 ```python
-## parallel function for joblib
+#parallel function for joblib
 def compute_inplace_with_joblib(chunk):
     return np.cos(np.sin(np.sqrt(chunk)))
 
