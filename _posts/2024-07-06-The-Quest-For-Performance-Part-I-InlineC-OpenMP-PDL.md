@@ -140,7 +140,7 @@ $array_in_PDL_copy->inplace->cos;
 
 ```
 Using **8 threads** we get something like this
-```bash
+```text
 Inplace benchmarks
 Inplace  in         Perl took 2.85 seconds
 Inplace  in Perl/mapCseq took 1.62 seconds
@@ -152,7 +152,7 @@ Inplace  in     PDL - ST took 0.94 seconds
 Inplace  in     PDL - MT took 0.17 seconds
 ```
 Using **16 threads** we get this!
-```bash
+```text
 Starting the benchmark for 50000000 elements using 16 threads/workers
 
 Inplace benchmarks
