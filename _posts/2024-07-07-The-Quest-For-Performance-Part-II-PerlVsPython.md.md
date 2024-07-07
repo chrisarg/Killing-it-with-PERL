@@ -76,13 +76,41 @@ In place in (Python Joblib): 4.59 seconds
 In place in ( Python Numba): 2.62 seconds
 In place in ( Python Numpy): 0.92 seconds
 ```
+The numba is surprisingly slower!? Could it be due to the overhead of compilation as pointed out by [mohawk2](https://github.com/mohawk2) in an IRC exchange about this [issue](https://towardsdatascience.com/why-numba-sometime-way-slower-than-numpy-15d077390287)?
+To test this, we should call compute_inplace_with_numba once **before** we execute the benchmark. Doing so, shows that Numba is now faster than Numpy.
 
+```text
+In place in (  base Python): 11.89 seconds
+In place in (Python Joblib): 4.42 seconds
+In place in ( Python Numpy): 0.93 seconds
+In place in ( Python Numba): 0.49 seconds
+```
+Finally, I decided to take base R for ride in the same example:
+```r
+n<-50000000
+x<-runif(n)
+start_time <- Sys.time()
+result <- cos(sin(sqrt(x)))
+end_time <- Sys.time()
+
+# Calculate the time taken
+time_taken <- end_time - start_time
+
+# Print the time taken
+print(sprintf("Time in base R: %.2f seconds", time_taken))
+```
+which yielded the following timing result:
+
+```text
+Time in base R: 1.30 seconds
+```
 Compared to the [Perl results](https://chrisarg.github.io/Killing-It-with-PERL/2024/07/06/The-Quest-For-Performance-Part-I-InlineC-OpenMP-PDL.html) we note the following about this example:
 * Inplace operations in base Python were ~ 3.5 **slower** than Perl
-* Single threaded PDL and numpy gave nearly identical results
-* Compilation using Numba under-delivered relative to Numpy (still scratching my head about this one)
+* Single threaded PDL and numpy gave nearly identical results, followed closely by base R
+* Failure to account for the compilation overhead of Numba yields the **false** impression that it is slower than Numpy. When accounting for the compilation overhead, Numba is x2 faster than Numpy
 * Parallelization with Joblib did improve upon base Python, but was still inferior to the single thread Perl implementation
-* Multi-threaded PDL (and OpenMP) crashed every other implementation in either language
+* Multi-threaded PDL (and OpenMP) crashed every other implementation in all languages
 
 I hope this post and the [Perl one](https://chrisarg.github.io/Killing-It-with-PERL/2024/07/06/The-Quest-For-Performance-Part-I-InlineC-OpenMP-PDL.html), provide some food for thought about
 the language to use for your next data/compute intensive operation. 
+The next part in this series will look into the same example using arrays in C. This final installment will (hopefully) provide some insights about the impact of memory locality and the overhead incurred by using dynamically typed languages. 
