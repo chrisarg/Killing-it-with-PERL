@@ -66,7 +66,7 @@ for my $dataset (@fasta_files) {
     unless ( -e $dataset_fname || -e $uncompressed_dataset_name ) {
         my $rc = getstore( $dataset, $dataset_fname );
         if ( is_error($rc) ) {
-            next "getstore of <$dataset> failed with $rc";
+            die "getstore of <$dataset> failed with $rc";
         }
     }
     system 'gzip', '-d', $dataset_fname
@@ -90,7 +90,7 @@ for my $file (@index_files) {
 my $seq_length = pdl(@human_transcript_length);
 
 ## calculate the summary statistics
-sub summary_stats($data) {   ## Perl has prototypes!
+sub summary_stats($data) {   ## Perl has signatures!
     unless ( $data->isa('PDL') ) {
         warn "summary_stats expects a PDL object";
         return undef;

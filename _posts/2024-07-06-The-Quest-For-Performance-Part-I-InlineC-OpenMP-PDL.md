@@ -3,7 +3,7 @@ title: " The Quest for Performance Part I : Inline C, OpenMP and PDL "
 date: 2024-07-06
 ---
 
-Sometimes, one's code must simply perform and principles, such as aeasthetics, "cleverness" or commitment to a single language solution simply go out of the window. 
+Sometimes, one's code must simply perform and principles, such as aesthetics, "cleverness" or commitment to a single language solution simply go out of the window. 
 At the TPRC I gave a talk (here are the [slides](https://www.slideshare.net/slideshow/enhancing-non-perl-bioinformatic-applications-with-perl/269925371)) about how this 
 can be done for bioinformatics applications, but I feel that a simpler example is warranted to illustrate the potential venues to maximize performance that a Perl 
 programmer has at their disposal when working in data intensive applications. 

@@ -33,7 +33,7 @@ array2 = array0.copy()
 array_in_np = np.array(array1)
 array_in_np_copy = array_in_np.copy()
 ```
-And here are our contenstants: 
+And here are our contestants: 
 * Base Python
   ```python
   for i in range(len(array0)):
