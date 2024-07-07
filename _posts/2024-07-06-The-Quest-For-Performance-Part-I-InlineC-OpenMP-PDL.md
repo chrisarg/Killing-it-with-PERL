@@ -169,7 +169,7 @@ A few observations:
 * The OpenMP and the multi-threaded (MT) of the PDL are responsive to the number of workers, while the solutions are not. Hence, the timings of the pure Perl and the inline non-OpenMP solution timings in these benchmarks give
 an idea of the natural variability in performance
 * Writing the map version of the code in C improved performance by about 180% (contrast Perl and Perl/mapC).
-* Using PDL improved performance by 285-300% (contrast PDL - ST and Perl timings) at the expense of memory storage.
+* Using PDL **in a single thread** improved performance by 285-300% (contrast PDL - ST and Perl timings).
 * There was a price to pay for repeated memory access (contrast Perl/mapC to Perl/mapCseq)
 * OpenMP and multi-threaded PDL operations gave similar performance (though PDL appeared faster in these examples). The code run 23-30 times faster.
 
