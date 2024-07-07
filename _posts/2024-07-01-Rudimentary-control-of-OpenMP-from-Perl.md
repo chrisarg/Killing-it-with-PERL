@@ -46,7 +46,7 @@ __DATA__
 __C__
 ```
 
-And here is the **C** part (which would ordinarly follow the \_\_C\_\_ token (but we parsed it out to highlight the C syntax).
+And here is the **C** part (which would ordinarily follow the \_\_C\_\_ token (but we pulled it out to highlight the C syntax).
 
 ```c
 
