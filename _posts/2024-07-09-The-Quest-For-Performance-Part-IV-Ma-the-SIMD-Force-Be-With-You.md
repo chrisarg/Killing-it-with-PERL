@@ -34,4 +34,12 @@
 |Cos | C | 3.57e-01 seconds|
 |Sin | C | 4.96e-01 seconds|
 
+|Function|Library|Execution Time    |
+|:------:|:-----:|:----------------:|
+|Sqrt | C - Ofast| 1.00e-01 seconds|
+|Sin | C - Ofast| 9.89e-02 seconds|
+|Cos | C - Ofast| 1.05e-01 seconds|
+|Exp | C - Ofast| 8.40e-02 seconds|
+|Log | C - Ofast| 1.04e-01 seconds|
+
 
