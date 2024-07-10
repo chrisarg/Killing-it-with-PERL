@@ -13,13 +13,13 @@
 |    Log | numba |  1.47e-01 seconds|
 |    Cos | numba |  1.82e-01 seconds|
 
-|Function|Mean ULP   | Median ULP | Max ULP |
+|Function|Mean ULP   | Median ULP | 99.9th Percentile ULP |Max ULP |
 |:------:|:----------------:|:----------------:|:----------------:|
-|Sqrt| 0.00e+00|0.00e+00|0.00e+00
-|Sin| 1.56e-03|0.00e+00|1.00e+00|
-|Cos| 1.43e-03|0.00e+00|1.00e+00|
-|Exp| 5.45e-03|0.00e+00|2.00e+00|
-|Log| 1.09e-02|0.00e+00|3.00e+00|
+|Sqrt| 0.00e+00|0.00e+00|0.00e+00|0.00e+00
+|Sin| 1.56e-03|0.00e+00|1.00e+00|1.00e+00
+|Cos| 1.43e-03|0.00e+00|1.00e+00|1.00e+00
+|Exp| 5.47e-03|0.00e+00|1.00e+00|2.00e+00
+|Log| 1.09e-02|0.00e+00|2.00e+00|3.00e+00
 
 |Function|Library|Execution Time    |
 |:------:|:-----:|:----------------:|
