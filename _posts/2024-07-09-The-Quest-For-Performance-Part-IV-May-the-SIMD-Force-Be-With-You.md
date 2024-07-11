@@ -1,4 +1,7 @@
-
+---
+title: " The Quest for Performance Part IV : May the SIMD Force be with you "
+date: 2024-07-09
+---
 
 |Function|Library|Execution Time    |
 |:------:|:-----:|:----------------:|
