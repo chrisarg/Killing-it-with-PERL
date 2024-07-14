@@ -121,7 +121,7 @@ CFLAGS = -O3 -ftree-vectorize  -march=native -mtune=native -Wall -std=gnu11 -fop
 LDFLAGS = -fPIE -fopenmp 
 LIBS =  -lm
 ```
-During compilation, gcc informs us about all the wonderful missed opportunities to optimize the loop. The performance table below also demonstrates this; note that the standard C implementation and PDL are equivalent and equal in performance to numby. Perl through PDL can deliver performance in our data science world.
+During compilation, gcc informs us about all the wonderful missed opportunities to optimize the loop. The performance table below also demonstrates this; note that the standard C implementation and PDL are equivalent and equal in performance to numba. Perl through PDL can deliver performance in our data science world.
 
 |Function|Library|Execution Time    |
 |:------:|:-----:|:----------------:|
