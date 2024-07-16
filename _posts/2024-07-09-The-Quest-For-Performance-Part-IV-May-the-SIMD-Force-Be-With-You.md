@@ -3,6 +3,7 @@ title: " The Quest for Performance Part IV : May the SIMD Force be with you "
 date: 2024-07-09
 ---
 At this point one may wonder how numba, the Python compiler around numpy Python code, delivers a performance premium over numpy. To do so, let's inspect timings individually for all trigonometric functions (and yes, the exponential and the logarithm are trigonometric functions if you recall your complex analysis lessons from high school!). But the test is not relevant only for those who want to do high school trigonometry: physics engines e.g. in games will use these function, and machine learning and statistical calculations heavily use log and exp. So getting the trigonometric functions right is one small, but important step, towards implementing a variety of applications. The table below shows the timings for 50M in place transformations:
+
 |Function|Library|Execution Time    |
 |:------:|:-----:|:----------------:|
 |   Sqrt | numpy |  1.02e-01 seconds|
@@ -23,7 +24,8 @@ def compute_ulp_error(array1, array2):
 ## maxulp set up to a very high number to avoid throwing an exception in the code
     return np.testing.assert_array_max_ulp(array1, array2, maxulp=100000)
 ```
-These _numerical_ benchmarks indicate that the square root function utilizes pretty much equivalent code in numpy and numba, while for all the other trigonometric functions the mean, median, 99.9th percentile and maximum ULP value over all 50M numbers differ. This is a subtle hint, that SIMD is at play: vectorization changes slightly the semantics of floating point code to make use of associative math, and floating point numerical operations are not associative. 
+These _numerical_ benchmarks indicate that the square root function utilizes pretty much equivalent code in numpy and numba, while for all the other trigonometric functions the mean, median, 99.9th percentile and maximum ULP value over all 50M numbers differ. This is a subtle hint that SIMD is at play: vectorization changes slightly the semantics of floating point code to make use of associative math, and floating point numerical operations are not associative.
+
 |Function|Mean ULP   | Median ULP | 99.9th ULP |Max ULP |
 |:------:|:----------------:|:----------------:|:----------------:|:----------------:|
 |Sqrt| 0.00e+00|0.00e+00|0.00e+00|0.00e+00
@@ -119,7 +121,8 @@ CFLAGS = -O3 -ftree-vectorize  -march=native -mtune=native -Wall -std=gnu11 -fop
 LDFLAGS = -fPIE -fopenmp 
 LIBS =  -lm
 ```
-During compilation, gcc informs us about all the wonderfull missed opportunities to optimize the loop. The performance table below also demonstrates this; note that the standard C implementation and PDL are equivalent and equal in performance to numby. Perl through PDL can deliver performance in our data science world. 
+During compilation, gcc informs us about all the wonderful missed opportunities to optimize the loop. The performance table below also demonstrates this; note that the standard C implementation and PDL are equivalent and equal in performance to numba. Perl through PDL can deliver performance in our data science world.
+
 |Function|Library|Execution Time    |
 |:------:|:-----:|:----------------:|
 |     Sqrt | PDL | 1.11e-01 seconds|
@@ -217,7 +220,7 @@ The take home points (some of which may be somewhat surprising are):
 These observations generate the following big picture questions:
 * Observations 1 and 2 make it quite surprising that base Python earned a reputation for a data science language. In fact, with these performance characteristics of a rather simple numerical code, one should approach the replacement of R (or Perl for those of us who use it) by base Python in data analysis codes. 
 * Since hybrid implementations that involve C and Perl can deliver real performance benefits using SIMD aware code, even if a single thread is used, should we be upgrading our Inline::C codes to use SIMD friendly compiler flags? Or (for those who are are afraid of _-Ofast_, perhaps a carefully prepared mixology of intrinsics, and even assembly?
-* Should be looking into upgrading various C/XS modules for Perl, so that they use OpenMP? 
-* Why are not more people use the jewel of software that is PDL? The auto-threading property alone should make people think about using it for demanding, data intensive tasks.
+* Should we be looking into upgrading various C/XS modules for Perl, so that they use OpenMP? 
+* Why are not more people using the jewel of software that is PDL? The auto-threading property alone should make people think about using it for demanding, data intensive tasks.
 * Is it possible to create hybrid applications that rely on both PDL and OpenMP/Inline::C for different computations?
 * Should we look into special builds for PDL that leverage the SIMD properties and compiler pragmas to allow users to have their cake (SIMD vectorization) and eat it (autothreading) too?

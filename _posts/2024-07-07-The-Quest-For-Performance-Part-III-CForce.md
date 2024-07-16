@@ -13,11 +13,11 @@ The humble C file makefile allows one to make such performance evaluations expli
 The C code for our toy example is listed in its entirety below. The code is rather self-explanatory, so will not spend time explaining other than pointing out that it contains four functions for
 * Non-sequential calculation of the expensive function : all three floating pointing operations take place inside a single loop using one thread
 * Sequential calculations of the expensive function : each of the 3 floating point function evaluations takes inside a separate loop using one thread
-* Non-sequential OpenMP code : threaded version of the non-sequenctial code
+* Non-sequential OpenMP code : threaded version of the non-sequential code
 * Sequential OpenMP code: threaded of the sequential code
 
 In this case, one may hope that the compiler is smart enough to recognize that the square root maps to packed (vectorized) floating pointing operations in assembly, so that one function can be vectorized using the appropriate SIMD instructions (note we did not use the simd program for the OpenMP codes). 
-Perhaps the speedup from the vectorization may offest the loss of performance from repeatedly accessing the same memory locations (or not).  
+Perhaps the speedup from the vectorization may offset the loss of performance from repeatedly accessing the same memory locations (or not).  
 ```c
 
 #include <stdlib.h>
@@ -125,8 +125,7 @@ void _set_openmp_schedule_from_env() {
 }
 
 void _set_num_threads_from_env() {
-  char *num;
-  num = getenv("OMP_NUM_THREADS");
+  char *num = getenv("OMP_NUM_THREADS");
   printf("Number of threads = %s from within C\n", num);
   omp_set_num_threads(atoi(num));
 }
