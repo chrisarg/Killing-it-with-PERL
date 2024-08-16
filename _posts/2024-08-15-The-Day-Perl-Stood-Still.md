@@ -168,5 +168,5 @@ I obtained the following result:
 Time taken to allocate and initialize array: 0.000203 seconds
 Initializes per second: 4926.108374
 ```
-which is practically has the same order of magnitude as the equivalent allocation as the _Inline::C_ malloc/C approach. 
+which is practically executes in the same order of magnitude as the equivalent allocation as the _Inline::C_ malloc/C approach. 
 After researching the issue further, I discovered that the malloc I grew to admire trades speed in memory allocation for generality, and there is a plethora of faster memory allocators out there. It seems that Perl is using one such allocator for its strings, and kicks C's butt in this task of allocating buffers. 
