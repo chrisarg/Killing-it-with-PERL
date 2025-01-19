@@ -1,10 +1,10 @@
 ---
-title: "Timing Peak DRAM Use in R With Perl - Part 1"
+title: "Profiling  Peak DRAM Use in R With Perl - Part 1"
 date: 2025-01-18
 ---
 
 Another year, another opportunity for Perl to excel as a system's language. Today I decided to take Perl for a (?)wild ride and use it to monitor peak physical DRAM use in a R script.
-Due to the multi-language nature of the post, there will be **a lot** of R code in the first part of the series; however, the code is self-explanatory, and should not be difficult to understand (the same applies to the Perl code for those coming from a R background). For those of you who would like to skip the R part (why?), jump straight to the end Part 1 to see the solution and then go to Part 2 for the details.
+Due to the multi-language nature of the post, there will be **a lot** of R code in the first part of the series; however, the code is self-explanatory, and should not be difficult to understand (the same applies to the Perl code for those coming from a R background). For those of you who would like to skip the R part (why?), jump straight to the end Part 1 to see the solution and then go to [Part 2](https://chrisarg.github.io/Killing-It-with-PERL/2025/01/19/Timing-Peak-DRAM-Use-In-R-With-Perl-Part-2.html) for the details.
 
 First, a little bit of background about R's memory management and the tools that one can use _within_ R to monitor how the process is managing memory. R similar to Perl (?)frees the programmer from having to manage memory manually by providing dynamically allocated containers. R features a garbage collector, which similar to Perl's uses a reference counting mechanism to return memory back to the operating system. 
 Managing memory in R is as critical as managing memory in Perl, and there are tools available that are built-in the language (the [Names and Values](https://adv-r.hadley.nz/names-values.html) in the 2nd edition of the book "Advanced R" is a valuable introduction to memory management, while the Chapter [Memory](http://adv-r.had.co.nz/memory.html) in the first edition of that book is also a useful read).
@@ -78,7 +78,7 @@ val<-bench_time_mem(
 )
 ```
 In this example, we first provide an implementation of a function `busy_wait` that simulates a work load without further allocation. 
-The actual code to be profiled, alternates periods of busy waiting with allocation and de-allocation. With the values of `N` and `work_time` in the code snippet, I obtain the following profile result:
+The actual code to be profiled, alternates periods of busy waiting with allocation and de-allocation. With the values of `N` and `work_time` in the code snippet, I obtain the following code profile summary:
 ```text
 > val
   total_time   R_gc_alloc logfile_size 
@@ -130,7 +130,7 @@ an array of 10^5 doubles and filling it with random numbers is _very fast_ (it t
 ```
 
 _So how can one get the peak DRAM usage without logging anything to the hard disk_? 
-The answer, which will be provided in Part 2, blends together R and Perl and is conceptually 
+The answer, which will be provided in [Part 2](https://chrisarg.github.io/Killing-It-with-PERL/2025/01/19/Timing-Peak-DRAM-Use-In-R-With-Perl-Part-2.html), blends together R and Perl and is conceptually 
 very simple, design-wise:
 * write a Perl script that probes the `ps` command line utility for resident set size (RSS) i.e. the footprint of the R process in DRAM.
 * put the probing of the RSS in a monitoring loop, so that awakens periodically to sample the size of the RSS in _realtime_ and compares
