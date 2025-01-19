@@ -3,7 +3,7 @@ title: "Profiling Peak DRAM Use in R With Perl - Part 2"
 date: 2025-01-19
 ---
 
-In the second part of this we implement the solution that was outlines at the end of [Part 1](https://chrisarg.github.io/Killing-It-with-PERL/2025/01/18/Timing-Peak-DRAM-Use-In-R-With-Perl-Part-1.html
+In the second part of this we implement the solution that was outlined at the end of [Part 1](https://chrisarg.github.io/Killing-It-with-PERL/2025/01/18/Timing-Peak-DRAM-Use-In-R-With-Perl-Part-1.html
 ):
 1. utilize a Perl application that probes the operating system in real time for the RSS (Resident Set Size), i.e. the DRAM footprint of an application
 2. fire the application from within R as a separate process, provide it with the PID (Process ID) of the R session and put it in the background
@@ -13,13 +13,12 @@ In the second part of this we implement the solution that was outlines at the en
 The Perl application that implements the first step is straightforward:
 1. Obtain the command line arguments : the PID of the R session, a monitoring interval and a temporary file ...
 2. for the Perl application to write out its own PID
-3.  Obtain the initial memory usage by call the `ps` command line utility, using the excellent (and safe as it bypasses the shell!)
-4. [IPC::System::Simple](https://metacpan.org/pod/IPC::System::Simple) MetaCPAN module
-5. Register an event handler that will write out the peak change ("\$max_delta") change of the RSS from the initial value, as well s the initial value
+3.  Obtain the initial memory usage by call the `ps` command line utility, using the excellent (and safe as it bypasses the shell!) [IPC::System::Simple](https://metacpan.org/pod/IPC::System::Simple) MetaCPAN module
+5. Register an event handler that will write out the peak change ("\$max_delta") of the RSS from the initial value, as well as the initial value
 6. Go into an infinite loop, in which
 7.   * ps is probed for the _current_ value of the RSS,
      * subtracts it from the initial,
-     * updates the value of \$max_delta if the current value over the baseline is larger than the
+     * updates the value of \$max_delta if the current value over the baseline is larger
      * goes to sleep for a user defined period of time
      * reawakens at the top of the `while` loop
 
@@ -75,16 +74,16 @@ while (1) {
 Having delegated the peak DRAM monitoring to Perl, R is now free to obtain execution timings and memory allocation using Henrik Bengtsson's excellent `profmem` [package](https://cran.r-project.org/web/packages/profmem/index.html)
 The package's vignette may be found [here](https://cran.r-project.org/web/packages/profmem/vignettes/profmem.html) and explains what id does and how this works (emphasis is mine):
 
->The profmem() function uses the utils::Rprofmem() function for logging memory 
+>The `profmem()` function uses the `utils::Rprofmem()` function for logging memory 
 allocation events to a temporary file. The logged events are parsed and returned
 as an in-memory R object in a format that is convenient to work with. **All memory
-allocations that are done via the native allocVector3() part of R's native API 
+allocations that are done via the native `allocVector3()` part of R's native API 
 are logged**, which means that nearly all memory allocations are logged. 
 Any objects allocated this way are automatically deallocated by R's garbage 
-collector at some point. **Garbage collection events are not logged **by profmem().
-**Allocations not logged are those done by non-R native libraries or R packages 
-that use native code Calloc() / Free() for internal objects**. 
-Such objects are not handled by the R garbage collector.
+collector at some point. **Garbage collection events are _not_ logged by `profmem()`. 
+Allocations _not_ logged are those done by non-R native libraries or R packages 
+that use native code `Calloc()` / `Free()` for internal objects**. 
+Such objects are _not_ handled by the R garbage collector.
 
 Based on this description, `monitor_memory.pl` and `profmem` are complementary: the former will log peak running memory use, while the latter will log in all 
 allocations, and the combination will provide the best of both worlds. 
@@ -355,8 +354,7 @@ Allocating
 Having described the solution, let's provide some limitations and a context of use that acknowledges these limitations and some extensions:
 * Small allocations (e.g. 100k doubles or below) will be invisible to the Perl monitor. This appears to be related to how the OS manages memory and how the kernel updates the page that is raided by `ps` for data
 * This code is thus best used to monitor large allocations in long calculations
-* One can extend the Perl monitor to take action with respect to R if memory usage grows at an unstainable rate, alert the user etc (
-* important in my mind for large tasks executing remotely e.g. over the weekend). This is an interesting extension for future work
+* One can extend the Perl monitor to take action with respect to R if memory usage grows at an unstainable rate, alert the user etc (important in my mind for large tasks executing remotely e.g. over the weekend). This is an interesting extension for future work
 * One can easily extend the Perl to work under MacOs (trivial - as it has a `ps` command line utility), and Windows, e.g. run R under `WSL2` or use `tasklist` instead of `ps` (another possible extension)
 
 I hope you enjoyed this journey with R and Perl so far! Have fun until the next time.    
