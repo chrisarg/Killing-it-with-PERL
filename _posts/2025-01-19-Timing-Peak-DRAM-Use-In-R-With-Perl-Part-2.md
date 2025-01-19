@@ -1,5 +1,5 @@
 ---
-title: "Timing Peak DRAM Use in R With Perl - Part 2"
+title: "Profiling Peak DRAM Use in R With Perl - Part 2"
 date: 2025-01-19
 ---
 
