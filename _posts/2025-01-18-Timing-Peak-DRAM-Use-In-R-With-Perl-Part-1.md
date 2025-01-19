@@ -4,7 +4,8 @@ date: 2025-01-18
 ---
 
 Another year, another opportunity for Perl to excel as a system's language. Today I decided to take Perl for a (?)wild ride and use it to monitor peak physical DRAM use in a R script.
-Due to the multi-language nature of the post, there will be **a lot** of R code in the body; however, the code is self-explanatory, and should not be difficult to understand (the same applies to the Perl code for those coming from a R background).
+Due to the multi-language nature of the post, there will be **a lot** of R code in the first part of the series; however, the code is self-explanatory, and should not be difficult to understand (the same applies to the Perl code for those coming from a R background). For those of you who would like to skip the R part (why?), jump straight to the end Part 1 to see the solution and then go to Part 2 for the details.
+
 First, a little bit of background about R's memory management and the tools that one can use _within_ R to monitor how the process is managing memory. R similar to Perl (?)frees the programmer from having to manage memory manually by providing dynamically allocated containers. R features a garbage collector, which similar to Perl's uses a reference counting mechanism to return memory back to the operating system. 
 Managing memory in R is as critical as managing memory in Perl, and there are tools available that are built-in the language (the [Names and Values](https://adv-r.hadley.nz/names-values.html) in the 2nd edition of the book "Advanced R" is a valuable introduction to memory management, while the Chapter [Memory](http://adv-r.had.co.nz/memory.html) in the first edition of that book is also a useful read).
 The basic tool used to profile R code is the builtin function [Rprof](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/Rprof) that samples the call stack and **writes it out** to a log-file that can be subsequently parsed. 
