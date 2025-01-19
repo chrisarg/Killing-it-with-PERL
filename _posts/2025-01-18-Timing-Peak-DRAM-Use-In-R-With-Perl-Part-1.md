@@ -113,11 +113,11 @@ valcp
   total_time   R_gc_alloc logfile_size 
          3.2    1600000.0      30773.0 
 ```
-Yet while both codes allocated the same total amount of memory, the first code would work if one allocated the entirety of the free memory in a given machine, 
+Whie both codes allocated the same _total_ amount of memory, the first code would work if one allocated the entirety of the free memory in a given machine, 
 while the second would croak when roughly half the free memory was requested.
 
-The difference of ~0.2sec execution time, is the price one has to pay for triggering the garbage collector. The following shows that while allocating 
-an array of 10^5 doubles and filling it with random numbers takes 6msec in my machine, triggering the gaarbage collector is 32x slower.
+The difference of ~0.2sec execution time, is the price one has to pay for triggering R's garbage collector. The following shows that while allocating 
+an array of 10^5 doubles and filling it with random numbers is _very fast_ (it takes 6msec in my machine), triggering the gaarbage collector is 32x slower.
 ```text
 > system.time(rnorm(N))
    user  system elapsed 
