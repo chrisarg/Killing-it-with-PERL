@@ -46,7 +46,7 @@ bench_time_mem<-function(x) {  ## x is the R expression to profile
   retval
 }
 ```
-The code should be self-explanatory even for non R users : it first triggers the garbage collector, and then in sequence creates a temporary file, starts logging to that file, execute the R expression (R code within brackets, similar to how one would provide an anonymous code reference in Perl), then parses the file to get memory usage and timing), and returns the total time, the size of the memory allocated by R in the stack, when running the expression and the size of the log file.
+The code should be self-explanatory even for non R users : it first triggers the garbage collector, and then in sequence creates a temporary file, starts logging to that file, execute the R expression (R code within brackets, similar to how one would provide an anonymous code reference in Perl), then parses the file to get memory usage and timing), and returns the total time, the size of the memory allocated by R in the stack when running the expression, and the size of the log file.
 
 Here is a minimally working example:
 
@@ -68,7 +68,7 @@ val<-bench_time_mem(
 		busy_wait(work_time);  ## work without allocation
 		cat("\nAllocating\n")
 		q<-rnorm(N);            ## Gaussian random variables
-		busy_wait(work_time);   ## work without allocation
+		busy_wait(work_time);   ## work with allocation
 		rm(q);gc(reset=F)       ## free memory/trigger the gc
 		q2<-rnorm(N);           ## another allocation
 		busy_wait(work_time);   ## busy working!
@@ -85,12 +85,12 @@ The actual code to be profiled, alternates periods of busy waiting with allocati
          3.4    1600000.0      32446.0 
 ```
 Let's talk about these figures: first note that parsing the Rprof, does not allow one direct access to the peak memory used during the calculation 
-(only the **total amount of memory** allocated in the stack. 
+(only the **total amount of memory** allocated in the stack). 
 **While this information is crucial for performance, i.e. one pays a price for every byte moved around, it is not very informative about whether t
-he program will even run in the machine, as the datasets scale: R processes data in memory, and when the _physical_ memry is exhausted, 
+he program will even run in the machine, as the datasets scale: R processes data in memory, and when the _physical_ memory is exhausted, 
 the operating system will put the R process out of its misery.**
 In the example above, the peak memory usage while the expression executes is N*8 (since rnorm returns a double precision floating number in C parlance), 
-but since two allocations were done, the profiler cn only report their sum. In fact, the output is virtually indistinguishable from the following code which allocates
+but since two allocations were done, the profiler can only report their sum. In fact, the output is virtually indistinguishable from the following code which allocates
 an array of 2 x N doubles in a single go.
 
 ```R
@@ -113,7 +113,7 @@ valcp
   total_time   R_gc_alloc logfile_size 
          3.2    1600000.0      30773.0 
 ```
-Whie both codes allocated the same _total_ amount of memory, the first code would work if one allocated the entirety of the free memory in a given machine, 
+While both codes allocated the same _total_ amount of memory, the first code would work if one allocated the entirety of the free memory in a given machine, 
 while the second would croak when roughly half the free memory was requested.
 
 The difference of ~0.2sec execution time, is the price one has to pay for triggering R's garbage collector. The following shows that while allocating 
@@ -133,8 +133,7 @@ _So how can one get the peak DRAM usage without logging anything to the hard dis
 The answer, which will be provided in [Part 2](https://chrisarg.github.io/Killing-It-with-PERL/2025/01/19/Timing-Peak-DRAM-Use-In-R-With-Perl-Part-2.html), blends together R and Perl and is conceptually 
 very simple, design-wise:
 * write a Perl script that probes the `ps` command line utility for resident set size (RSS) i.e. the footprint of the R process in DRAM.
-* put the probing of the RSS in a monitoring loop, so that awakens periodically to sample the size of the RSS in _realtime_ and compares
-* it to that at the beginning of the monitoring phase
+* put the probing of the RSS in a monitoring loop, so that awakens periodically to sample the size of the RSS in _realtime_ and compares it to that at the beginning of the monitoring phase
 * start the Perl monitoring script as sub-process of the R process, provide it with the Process ID (PID) of the R process and put it in the background
 * when the R expression concludes, _kill the Perl process_ and report the maximum difference of the RSS from the baseline; this gives the peak (over the baseline) footprint of the program in DRAM.
 
